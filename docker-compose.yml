@@ -1,0 +1,36 @@
+services:
+  solana-test-validator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: solana-test-validator
+    ports:
+      - "8899:8899"   # RPC port
+      - "8900:8900"   # RPC pubsub port
+      - "9900:9900"   # Faucet port
+    command: >
+      solana-test-validator
+      --rpc-port 8899
+      --bind-address 0.0.0.0
+      --faucet-port 9900
+      --faucet-sol 1000
+      --reset
+      --quiet
+    volumes:
+      - solana-ledger:/root/.config/solana
+      - ./test-ledger:/test-ledger
+    healthcheck:
+      test: ["CMD-SHELL", "solana cluster-version --url http://localhost:8899 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - solana-network
+
+volumes:
+  solana-ledger:
+    driver: local
+
+networks:
+  solana-network:
+    driver: bridge
