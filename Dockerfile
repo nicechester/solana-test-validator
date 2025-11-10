@@ -27,6 +27,7 @@ FROM debian:bookworm-slim
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
+    bzip2 \
     libssl3 \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
@@ -36,8 +37,8 @@ COPY --from=builder /build/solana/target/release/solana-test-validator /usr/loca
 COPY --from=builder /build/solana/target/release/solana /usr/local/bin/
 COPY --from=builder /build/solana/target/release/solana-keygen /usr/local/bin/
 
-# Create ledger directory
-RUN mkdir -p /solana/ledger
+# Create ledger directory with proper permissions
+RUN mkdir -p /solana/ledger && chmod -R 777 /solana
 
 WORKDIR /solana
 
