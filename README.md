@@ -19,13 +19,13 @@ Docker setup for running a Solana test validator with pre-funded test accounts. 
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
-   cd solana-test-validator-docker
+   git clone https://github.com/nicechester/solana-test-validator
+   cd solana-test-validator
    ```
 
 2. **Build and start the validator:**
    ```bash
-   docker-compose build
+   docker build -t solana-test-validator .
    docker-compose up -d
    ```
 
